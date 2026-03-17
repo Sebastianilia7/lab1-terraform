@@ -10,23 +10,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Checkout repo
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # 2️⃣ Install Terraform (matchar required_version >=1.14.0)
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: "1.14.5"   # stabil version som finns
+          terraform_version: "1.14.5"   # eller senaste version som stöds
           terraform_wrapper: false
 
+      # 3️⃣ Skapa GCP Service Account-nyckelfil korrekt
       - name: Setup GCP credentials
         run: |
-          echo "${{ secrets.GCP_SA_KEY }}" > ${{ github.workspace }}/gcp-sa-key.json
+          printf "%s" "${{ secrets.GCP_SA_KEY }}" > ${{ github.workspace }}/gcp-sa-key.json
           export GOOGLE_APPLICATION_CREDENTIALS="${{ github.workspace }}/gcp-sa-key.json"
 
+      # 4️⃣ Terraform init
       - name: Terraform Init
         run: terraform init
 
+      # 5️⃣ Terraform plan
       - name: Terraform Plan
         run: terraform plan
         env:
