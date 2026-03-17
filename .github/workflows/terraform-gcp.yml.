@@ -1,0 +1,42 @@
+name: Terraform GCP Workflow
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.14.5"
+          terraform_wrapper: false
+
+      - name: Setup GCP credentials
+        run: |
+          # Skriv ut hela secret exakt som JSON till en fil
+          printf "%s" "${{ secrets.GCP_SA_KEY }}" > ${{ github.workspace }}/gcp-sa-key.json
+          # Exportera miljövariabel så Terraform kan hitta filen
+          export GOOGLE_APPLICATION_CREDENTIALS="${{ github.workspace }}/gcp-sa-key.json"
+
+      - name: Validate GCP JSON
+        run: |
+          # Validera att JSON är korrekt innan terraform körs
+          cat ${{ github.workspace }}/gcp-sa-key.json | jq .
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Plan
+        run: terraform plan
+        env:
+          # Terraform kommer automatiskt använda den här filen
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/gcp-sa-key.json
