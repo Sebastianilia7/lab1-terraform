@@ -12,7 +12,6 @@ terraform {
 provider "google" {
   project     = "chas-devsecops-2026"
   region      = "europe-west1"
-  credentials = file("gcp-sa-key.json")
 }
 
 resource "google_compute_instance" "vm_instance" {
