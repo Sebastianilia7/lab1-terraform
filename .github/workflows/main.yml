@@ -16,7 +16,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: "1.7.6"   # matchar required_version i main.tf
+          terraform_version: "1.14.5"   # stabil version som finns
           terraform_wrapper: false
 
       - name: Setup GCP credentials
