@@ -16,9 +16,8 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: 1.7.6  # använd version du behöver
+          terraform_version: 1.6.15
 
-      # Skriv ut GCP-nyckeln till en temporär fil
       - name: Setup GCP credentials
         run: |
           echo "${{ secrets.GCP_SA_KEY }}" > ${{ github.workspace }}/gcp-sa-key.json
