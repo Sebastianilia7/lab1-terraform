@@ -2,7 +2,8 @@ name: Terraform GCP Workflow
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   pull_request:
 
 jobs:
