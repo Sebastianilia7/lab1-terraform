@@ -21,7 +21,9 @@ jobs:
 
       - name: Setup GCP credentials
         run: |
-          printf "%s" "${{ secrets.GCP_SA_KEY }}" > ${{ github.workspace }}/gcp-sa-key.json
+          cat <<EOF > ${{ github.workspace }}/gcp-sa-key.json
+${{ secrets.GCP_SA_KEY }}
+EOF
           export GOOGLE_APPLICATION_CREDENTIALS="${{ github.workspace }}/gcp-sa-key.json"
 
       - name: Terraform Init
