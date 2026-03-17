@@ -1,14 +1,14 @@
-name: Terraform
+name: Terraform GCP
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
 
 jobs:
   terraform:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -16,12 +16,15 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: 1.6.15
+          terraform_version: 1.6.15   # en officiell version
+          cli_config_credentials_hostname: ""   # tom, för att inte bryta installationen
+          terraform_wrapper: false    # vi behöver inte wrapper här
 
       - name: Setup GCP credentials
         run: |
           echo "${{ secrets.GCP_SA_KEY }}" > ${{ github.workspace }}/gcp-sa-key.json
           export GOOGLE_APPLICATION_CREDENTIALS="${{ github.workspace }}/gcp-sa-key.json"
+        shell: bash
 
       - name: Terraform Init
         run: terraform init
