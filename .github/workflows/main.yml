@@ -20,6 +20,10 @@ jobs:
         with:
           terraform_version: "1.14.7"
 
+      - name: Setup GCP credentials
+        run: |
+          echo "${{ secrets.GCP_SA_KEY }}" > gcp-sa-key.json
+
       - name: Terraform Init
         run: terraform init
 
