@@ -22,12 +22,20 @@ jobs:
 
       - name: Setup GCP credentials
         run: |
-          echo "${{ secrets.GCP_SA_KEY }}" | jq . > gcp-sa-key.json
+          # Skriv ut hela secret exakt som JSON till en fil
+          echo '${{ secrets.GCP_SA_KEY }}' > gcp-sa-key.json
+          # Exportera miljövariabel så Terraform kan hitta filen
+          export GOOGLE_APPLICATION_CREDENTIALS="./gcp-sa-key.json"
+
+      - name: Validate GCP JSON
+        run: |
+          # Validera att JSON är korrekt innan terraform körs
+          cat gcp-sa-key.json | jq .
 
       - name: Terraform Init
         run: terraform init
 
       - name: Terraform Plan
-        run: terraform plan
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ./gcp-sa-key.json
+        run: terraform plan
