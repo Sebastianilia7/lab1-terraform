@@ -21,7 +21,8 @@ jobs:
           terraform_wrapper: false
 
       - name: Setup GCP credentials
-        run: echo '${{ secrets.GCP_SA_KEY }}' > gcp-sa-key.json
+        run: |
+          echo "${{ secrets.GCP_SA_KEY }}" | jq . > gcp-sa-key.json
 
       - name: Terraform Init
         run: terraform init
