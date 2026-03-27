@@ -11,3 +11,4 @@ Steg som utförts
 Screenshot
 <img width="612" height="700" alt="Skärmavbild 2026-03-22 kl  18 31 06" src="https://github.com/user-attachments/assets/1d6f5b53-d0c5-4160-a100-03717b43ab13" />
 
+# PR fix
